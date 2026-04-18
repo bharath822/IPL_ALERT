@@ -19,7 +19,7 @@ def trigger_call(reason, event_id):
 
 def check_score():
     # Correct URL structure with F-string
-    url = f"https://cricapi.com{os.environ['CRICKET_API_KEY']}&offset=0"
+    url = f"https://api.cricapi.com/v1/currentMatches?apikey={os.environ['CRICKET_API_KEY']}&offset=0"
     
     try:
         response = requests.get(url).json()
