@@ -55,7 +55,7 @@ def check_score():
             event_id = f"{match_id}-ENDED"
             if event_id != last_alerted:
                 trigger_call("The match has officially ended", event_id)
-                printf("The match has ended: {match_name}")
+                print(f"The match has ended: {match_name}")
         elif scores:
             current_inning = scores[-1]
             inning_name = current_inning.get('inning')
