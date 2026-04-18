@@ -68,7 +68,7 @@ def check_score():
             if (overs >= 20.0 or wickets >= 10) and (event_id != last_alerted):
                 trigger_call(f"{inning_name} complete at {overs} overs", event_id)
             else:
-                print(f"Monitoring {match_name}: {inning_name} at {overs} ov.")
+                print(f"Monitoring {match_name}: {inning_name} at {overs} overs / {wickets} wickets.")
                 
     except Exception as e:
         print(f"Critical Error: {e}")
