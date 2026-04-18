@@ -1,0 +1,35 @@
+name: IPL Innings Call Alert
+on:
+  schedule:
+    - cron: '*/5 14-16 * * 1-5' # Weekdays 8:00pm-10:30pm IST
+    - cron: '*/5 10-12 * * 0,6' # Weekends 4:00pm-6:30pm IST
+    - cron: '*/5 14-16 * * 0,6' # Weekends 8:00pm-10:30pm IST
+  workflow_dispatch:
+
+jobs:
+  check-ipl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: pip install requests twilio
+
+      # This step restores the 'sticky note' file if it exists
+      - name: Restore Cooldown Cache
+        uses: actions/cache@v4
+        with:
+          path: last_alerted_inning.txt
+          key: ipl-cache-${{ github.run_id }}
+          restore-keys: |
+            ipl-cache-
+
+      - name: Run Script
+        env:
+          TWILIO_SID: ${{ secrets.TWILIO_SID }}
+          TWILIO_AUTH: ${{ secrets.TWILIO_AUTH }}
+          TWILIO_FROM: ${{ secrets.TWILIO_FROM }}
+          MY_PHONE: ${{ secrets.MY_PHONE }}
+          CRICKET_API_KEY: ${{ secrets.CRICKET_API_KEY }}
+        run: python ipl_alert.py
